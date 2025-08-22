@@ -253,6 +253,7 @@ MonoBehaviour:
   - {fileID: -7713579395597920918, guid: 155eaa58a23eff44e9427c37537a65dd, type: 3}
   - {fileID: -3812038031784012661, guid: adb7b49306066f64dae41566ef9a109f, type: 3}
   piecePrefab: {fileID: 5298801037145874189, guid: 8189120c54f109e4bbe60f5c5178ef89, type: 3}
+  hitPrefab: {fileID: 7094623659219901641, guid: 7a1368b3dbc07a44ba12db1c0a72fd4e, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,7 +714,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &2085886904
 SpriteRenderer:
   m_ObjectHideFlags: 0
