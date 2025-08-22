@@ -3,16 +3,18 @@ using UnityEngine;
 // 각 Piece 오브젝트에 붙어 선택, 이동, 스킬 사용 등을 실행한다.
 public class PieceBehaviour : MonoBehaviour
 {
-    public Piece Type; // Position, Type, Owner 정보 모두 저장됨.
+    public Piece piece; // Position, Type, Owner 정보 모두 저장됨.
 
-    private void Awake()
+    public void Init(Piece piece)
     {
-        if (Type != null) Type.OnPosChanged += OnPieceMoved;
+        this.piece = piece;
+        if (this.piece != null) this.piece.OnPosChanged += OnPieceMoved;
+        UpdatePiece();
     }
 
     private void OnDestroy()
     {
-        if (Type != null) Type.OnPosChanged -= OnPieceMoved; // 메모리 누수 방지
+        if (piece != null) piece.OnPosChanged -= OnPieceMoved; // 메모리 누수 방지
     }
 
     private void OnPieceMoved(Vector2Int newPos) => UpdatePiece();
@@ -21,13 +23,14 @@ public class PieceBehaviour : MonoBehaviour
     // 이동 이후 Piece 오브젝트의 상태를 갱신한다.
     private void UpdatePiece()
     {
-        transform.position = Utils.PosToIso(Type.Pos);
-        GetComponent<SpriteRenderer>().sortingOrder = Utils.PosToLayer(Type.Pos);
+        transform.position = Utils.PosToIso(piece.Pos);
+        GetComponent<SpriteRenderer>().sprite = GameManager.Instance.GetSprite(piece);
+        GetComponent<SpriteRenderer>().sortingOrder = Utils.PosToLayer(piece.Pos);
     }
 
     // 이 Piece를 움직이겠다는 선택 감지
     void OnMouseDown()
     {
-        if (GameManager.Instance.currentPiece == null) GameManager.Instance.selectPiece(Type);
+        if (GameManager.Instance.currentPiece == null) GameManager.Instance.selectPiece(piece);
     }
 }

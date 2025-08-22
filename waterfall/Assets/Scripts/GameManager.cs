@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -65,6 +66,20 @@ public class GameManager : MonoBehaviour {
     public UIManager uiManager; // 
     public Piece currentPiece;
     public battleManager battleManager;
+
+    // 저장 순서는 P, A, G, B, K, J
+    [SerializeField] private Sprite[] whiteSprites = new Sprite[6];
+    [SerializeField] private Sprite[] blackSprites = new Sprite[6];
+    public Sprite GetSprite(Piece piece)
+    {
+        Sprite[] target = piece.Owner == Player.White ? whiteSprites : blackSprites;
+        if (piece is Pawn) return target[0];
+        if (piece is AdultPawn) return target[1];
+        if (piece is God) return target[2];
+        if (piece is Bishop) return target[3];
+        if (piece is Knight) return target[4];
+        return target[5]; 
+    }
 
     public void Start()
     {
