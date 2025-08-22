@@ -65,13 +65,15 @@ public class AdultPawn : Piece
 {
     public AdultPawn(Vector2Int initpos, Player owner) : base(initpos, owner)
     {
-        if (owner == Player.White) Offsets = new() { new(1, 0), new(2, 0) };
-        else Offsets = new() { new(0, 1), new(0, 2) };
+        if (owner == Player.White) Offsets = new() { new(1, 0) };
+        else Offsets = new() { new(0, 1) };
     }
 }
 
 public class God : Piece
 {
+    public int skillPhase=0;
+    public Piece Target;
     public List<Vector2Int> Impacts = new()
     {
         new(1,0), new(1,1), new(1,-1),
@@ -96,10 +98,10 @@ public class Bishop : Piece
     {
         Offsets = new()
         {
-            new(1,1), new(2,2),
-            new(1,-1), new(2,-2),
-            new(-1,1), new(-2,2),
-            new(-1,-1), new(-2,-2)
+            new(1,1),
+            new(1,-1),
+            new(-1,1), 
+            new(-1,-1)
         };
     }
 }

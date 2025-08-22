@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
     public Player currentPlayer = Player.White; // 현재 플레이어의 턴 판단
     public UIManager uiManager; // 
     public Piece currentPiece;
+    private PieceBehaviour pieceBehaviour;
     public battleManager battleManager;
 
     private bool isSelectingPiece =false; // 클릭 취소 가능 여부 확인
@@ -103,18 +104,28 @@ public class GameManager : MonoBehaviour
     // 스테이지 시작 시 호출된다. 
     public void InitGame()
     {
+        // battleManager Tilemap 세팅
+        for (int i = 0; i < Utils.SizeX; i++)
+        {
+            for (int j = 0; j < Utils.SizeY; j++)
+            {
+                battleManager.Map[i, j] = new tile();
+            }
+        }
         // 루프를 두 번 돌 필요는 없지만 X, Y의 분류에 대한 통일성을 위해 두개로
         for (int i = 1; i < Utils.SizeX; i++)
         {
             Pawn pawn = new(new(0, i), Player.White);
             GameObject obj = Instantiate(piecePrefab);
             obj.GetComponent<PieceBehaviour>().Init(pawn);
+            battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = pawn;
         }
         for (int i = 1; i < Utils.SizeY; i++)
         {
             Pawn pawn = new(new(i, 0), Player.Black);
             GameObject obj = Instantiate(piecePrefab);
             obj.GetComponent<PieceBehaviour>().Init(pawn);
+            battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = pawn;
         }
 
         // Hit 오브젝트 풀 생성
@@ -123,21 +134,15 @@ public class GameManager : MonoBehaviour
             hits[i] = Instantiate(hitPrefab);
             hits[i].SetActive(false);
         }
-        for (int i = 0; i < Utils.SizeX; i++)
-        {
-            for (int j = 0; j < Utils.SizeY; j++)
-            {
-                battleManager.Map[i, j] = new tile();
-            }
-        }
     }
 
     /// <summary>
     /// 특정 piece를 선택할 경우 시점을 그 piece로 맞추어주는 함수
     /// </summary>
     /// <param name="selected"></param>
-    public void selectPiece(Piece selected)
+    public void selectPiece(Piece selected, PieceBehaviour pieceBehaviour)
     {
+        this.pieceBehaviour = pieceBehaviour;
         currentPiece = selected;
         uiManager.PieceMode(selected);
         PlaceHits(battleManager.getPossiblePosition(selected));
@@ -151,6 +156,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         currentPiece = null;
+        pieceBehaviour = null;
         uiManager.MainCameraMode();
         isSelectingPiece = false;
         RemoveHits();
@@ -161,6 +167,7 @@ public class GameManager : MonoBehaviour
     /// <param name="position"></param>
     public void selectPosition(Vector2Int position)
     {
+        isSelectingPiece = false;
         if (currentPiece != null)
         {
             battleManager.Map[currentPiece.Pos.x, currentPiece.Pos.y].piece = null;
@@ -177,9 +184,116 @@ public class GameManager : MonoBehaviour
     }
     /// <summary>
     /// 특정 스킬을 사용할 경우 발동하는 함수
+    /// 폰 기준 주위에 있는 UI를 선택할 시 호출되며, 폰을 특정 직업으로 전직시켜준다.
     /// </summary>
-    public void selectSkill()
+    public void selectPawn(int Type)
     {
+        if (currentPiece != null && currentPiece is Pawn pawn)
+        {
+            Type newType;
+            switch (Type)
+            {
+                case 0:
+                    newType = typeof(AdultPawn);
+                    break;
+                case 1:
+                    newType = typeof(Bishop);
+                    break;
+                case 2:
+                    newType = typeof(Jump);
+                    break;
+                case 3:
+                    newType = typeof(Knight);
+                    break;
+                case 4:
+                    newType = typeof(God);
+                    break;
+                default:
+                    newType = typeof(Pawn);
+                    break;
+            }
+
+            if (newType == typeof(Pawn))
+            {
+                endTurn();
+                return;
+            }
+            Piece newPiece = pawn.Transform(newType);
+            if (newPiece != null)
+            {
+                battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = newPiece;
+                pieceBehaviour.Init(newPiece);
+                endTurn();
+            }
+        }
+    }
+
+    public void selectGod(int Pos)
+    {
+        if (currentPiece != null && currentPiece is God god)
+        {
+            Vector2Int deltaPos;
+            switch (Pos)
+            {
+                case 0: // 위
+                    deltaPos = new Vector2Int(0, -1);
+                    break;
+                case 1: // 좌상
+                    deltaPos = new Vector2Int(-1, -1);
+                    break;
+                case 2: // 좌
+                    deltaPos = new Vector2Int(-1, 0);
+                    break;
+                case 3: // 좌하
+                    deltaPos = new Vector2Int(-1, 1);
+                    break;
+                case 4: // 아래
+                    deltaPos = new Vector2Int(0, 1);
+                    break;
+                case 5: // 우하
+                    deltaPos = new Vector2Int(1, 1);
+                    break;
+                case 6: // 우
+                    deltaPos = new Vector2Int(1, 0);
+                    break;
+                case 7: // 우상
+                    deltaPos = new Vector2Int(1, -1);
+                    break;
+                default:
+                    god.Target = null;
+                    god.skillPhase = 0;
+                    endTurn();
+                    return;
+            }
+
+            if (currentPiece.CheckPos(currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y))
+            {
+                if (god.skillPhase == 0)
+                {
+                    if (battleManager.Map[currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y].piece != null
+                        && battleManager.Map[currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y].piece.Owner != god.Owner)
+                    {
+                        god.Target = battleManager.Map[currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y]
+                            .piece;
+                        god.skillPhase = 1;
+                    }
+                }
+                else if (god.skillPhase == 1)
+                {
+                    if (battleManager.Map[currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y].piece ==
+                        null && god.Target != null)
+                    {
+                        battleManager.Map[god.Target.Pos.x,god.Target.Pos.y].piece = null;
+                        battleManager.Map[currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y].piece =
+                            god.Target;
+                        god.Target.SetPos(new Vector2Int(currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y));
+                        god.Target = null;
+                        god.skillPhase = 0;
+                        endTurn();
+                    }
+                }
+            }
+        }
 
     }
     /// <summary>

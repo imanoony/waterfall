@@ -1,11 +1,13 @@
+using System.Collections;
 using System.Net;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Rendering;
-
 public class UIManager : MonoBehaviour
 {
 	public CameraControl control; // 시점 변경을 위한 카메라
+	public GameObject pawnPanel;
+	public GameObject godPanel;
 	/// <summary>
 	/// 카메라를 전체 카메라로 변경
 	/// </summary>
@@ -19,6 +21,8 @@ public class UIManager : MonoBehaviour
 				// piece에게 이펙트 호출
 			}
 		}
+		pawnPanel.SetActive(false);
+		godPanel.SetActive(false);
 	}
 /// <summary>
 /// 카메라를 대상 카메라로 변경
@@ -34,17 +38,38 @@ public class UIManager : MonoBehaviour
 	/// <param name="selected"></param>
 	public void SkillMode(Piece selected)
 	{
+		control.SetCamera(2f, Utils.PosToIso(selected.Pos));
 		if (selected is God)
 		{
-			
+			StartCoroutine(openGodPanel());
 		}
-		else if(selected is Pawn)
+		else if(selected is Pawn pawn)
 		{
-			GameManager.Instance.endTurn();
+			if (pawn.Step >= 2)
+			{
+				StartCoroutine(openPawnPanel());
+			}
+			else
+			{
+				GameManager.Instance.endTurn();
+			}
 		}
 		else
 		{
 			GameManager.Instance.endTurn();
 		}
+	}
+
+	IEnumerator openPawnPanel()
+	{
+		yield return new WaitForSeconds(0.5f);
+		pawnPanel.SetActive(true);
+		godPanel.SetActive(false);
+	}
+	IEnumerator openGodPanel()
+	{
+		yield return new WaitForSeconds(0.5f);
+		pawnPanel.SetActive(false);
+		godPanel.SetActive(true);
 	}
 }
