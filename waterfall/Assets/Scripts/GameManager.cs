@@ -153,6 +153,7 @@ public class GameManager : MonoBehaviour
         currentPiece = null;
         uiManager.MainCameraMode();
         isSelectingPiece = false;
+        RemoveHits();
     }
     /// <summary>
     /// 특정 위치를 선택할 경우 그 위치로 piece를 이동하는 함수
