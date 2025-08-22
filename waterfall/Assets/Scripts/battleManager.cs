@@ -6,7 +6,7 @@ public class battleManager : MonoBehaviour
 	Vector2Int size = new Vector2Int(8, 8);
 	tile[,] Map;
 
-	public List<Vector2Int> getPossiblePosition(piece selectedPiece)
+	public List<Vector2Int> getPossiblePosition(Piece selectedPiece)
 	{
 		List<Vector2Int> possiblePos = new List<Vector2Int>();
 		if (selectedPiece is Jump)
