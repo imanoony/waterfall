@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
     public Piece currentPiece;
     public battleManager battleManager;
 
+    private bool isSelectingPiece =false; // 클릭 취소 가능 여부 확인
     // 저장 순서는 P, A, G, B, K, J
     [SerializeField] private Sprite[] whiteSprites = new Sprite[6];
     [SerializeField] private Sprite[] blackSprites = new Sprite[6];
@@ -122,6 +123,13 @@ public class GameManager : MonoBehaviour
             hits[i] = Instantiate(hitPrefab);
             hits[i].SetActive(false);
         }
+        for (int i = 0; i < Utils.SizeX; i++)
+        {
+            for (int j = 0; j < Utils.SizeY; j++)
+            {
+                battleManager.Map[i, j] = new tile();
+            }
+        }
     }
 
     /// <summary>
@@ -133,6 +141,18 @@ public class GameManager : MonoBehaviour
         currentPiece = selected;
         uiManager.PieceMode(selected);
         PlaceHits(battleManager.getPossiblePosition(selected));
+        isSelectingPiece = true;
+    }
+
+    public void StopSelecting()
+    {
+        if (!isSelectingPiece)
+        {
+            return;
+        }
+        currentPiece = null;
+        uiManager.MainCameraMode();
+        isSelectingPiece = false;
     }
     /// <summary>
     /// 특정 위치를 선택할 경우 그 위치로 piece를 이동하는 함수
@@ -142,7 +162,14 @@ public class GameManager : MonoBehaviour
     {
         if (currentPiece != null)
         {
+            battleManager.Map[currentPiece.Pos.x, currentPiece.Pos.y].piece = null;
+            battleManager.Map[position.x, position.y].piece = currentPiece;
             currentPiece.SetPos(position);
+        }
+
+        if (currentPiece is Pawn pawn)
+        {
+            pawn.AddStep();
         }
         uiManager.SkillMode(currentPiece);
         RemoveHits();
@@ -167,6 +194,8 @@ public class GameManager : MonoBehaviour
         {
             currentPlayer = Player.White;
         }
+
+        currentPiece = null;
         uiManager.MainCameraMode();
     }
 

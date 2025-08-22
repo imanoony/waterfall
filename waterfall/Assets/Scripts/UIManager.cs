@@ -1,3 +1,4 @@
+using System.Net;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Rendering;
@@ -25,7 +26,7 @@ public class UIManager : MonoBehaviour
 /// <param name="selected"></param>
 	public void PieceMode(Piece selected)
 	{
-		control.SetCamera(1.4f, Utils.PosToIso(selected.Pos));
+		control.SetCamera(2f, Utils.PosToIso(selected.Pos));
 	}
 	/// <summary>
 	/// 스킬 UI 띄우는 함수
@@ -33,6 +34,17 @@ public class UIManager : MonoBehaviour
 	/// <param name="selected"></param>
 	public void SkillMode(Piece selected)
 	{
-		
+		if (selected is God)
+		{
+			
+		}
+		else if(selected is Pawn)
+		{
+			GameManager.Instance.endTurn();
+		}
+		else
+		{
+			GameManager.Instance.endTurn();
+		}
 	}
 }

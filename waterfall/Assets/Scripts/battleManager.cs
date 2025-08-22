@@ -1,10 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class tile
+{
+	public Piece piece;
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
+	{
+        
+	}
+
+	// Update is called once per frame
+	void Update()
+	{
+        
+	}
+}
 public class battleManager : MonoBehaviour
 {
 	public tile[,] Map = new tile[Utils.SizeX, Utils.SizeY];
 
+	public void MoveTo(Vector2Int before, Vector2Int after)
+	{
+		
+	}
 	public List<Vector2Int> getPossiblePosition(Piece selectedPiece)
 	{
 		List<Vector2Int> possiblePos = new List<Vector2Int>();
