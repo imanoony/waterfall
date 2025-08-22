@@ -3,68 +3,57 @@ using UnityEngine;
 
 public class battleManager : MonoBehaviour
 {
-	Vector2Int size = new Vector2Int(8, 8);
-	tile[,] Map;
+	public tile[,] Map = new tile[Utils.SizeX, Utils.SizeY];
 
-	public List<Vector2Int> getPossiblePosition(piece selectedPiece)
+	public List<Vector2Int> getPossiblePosition(Piece selectedPiece)
 	{
 		List<Vector2Int> possiblePos = new List<Vector2Int>();
 		if (selectedPiece is Jump)
 		{
-			foreach (Vector2Int Delta in selectedPiece.Moves)
+			foreach (Vector2Int Delta in selectedPiece.Offsets)
 			{
-				if (selectedPiece.position.x + Delta.x < size.x && selectedPiece.position.x + Delta.x >= 0)
-					if (selectedPiece.position.y + Delta.y < size.y && selectedPiece.position.y + Delta.y >= 0)
-						if (Map[selectedPiece.position.x + Delta.x, selectedPiece.position.y + Delta.y].Piece == null)
+				if(selectedPiece.CheckPos(selectedPiece.Pos.x + Delta.x, selectedPiece.Pos.y + Delta.y))
+						if (Map[selectedPiece.Pos.x + Delta.x, selectedPiece.Pos.y + Delta.y].piece == null)
 						{
-							possiblePos.Add(new Vector2Int(selectedPiece.position.x + Delta.x,
-								selectedPiece.position.y + Delta.y));
+							possiblePos.Add(new Vector2Int(selectedPiece.Pos.x + Delta.x,
+								selectedPiece.Pos.y + Delta.y));
 						}
 
-				if (selectedPiece.position.x + 2 * Delta.x < size.x &&
-				    selectedPiece.position.x + 2 * Delta.x >= 0)
-					if (selectedPiece.position.y + 2 * Delta.y < size.y &&
-					    selectedPiece.position.y + 2 * Delta.y >= 0)
-						if (Map[selectedPiece.position.x + 2 * Delta.x,
-							    selectedPiece.position.y + 2 * Delta.y].Piece == null &&
-						    Map[selectedPiece.position.x + Delta.x, selectedPiece.position.y + Delta.y]
-							    .Piece != null)
+				if(selectedPiece.CheckPos(selectedPiece.Pos.x + 2 * Delta.x, selectedPiece.Pos.y + 2 * Delta.y))
+						if (Map[selectedPiece.Pos.x + 2 * Delta.x,
+							    selectedPiece.Pos.y + 2 * Delta.y].piece == null &&
+						    Map[selectedPiece.Pos.x + Delta.x, selectedPiece.Pos.y + Delta.y]
+							    .piece != null)
 						{
-							possiblePos.Add(new Vector2Int(selectedPiece.position.x + 2 * Delta.x,
-								selectedPiece.position.y + 2 * Delta.y));
+							possiblePos.Add(new Vector2Int(selectedPiece.Pos.x + 2 * Delta.x,
+								selectedPiece.Pos.y + 2 * Delta.y));
 						}
 
-				if (selectedPiece.position.x + 3 * Delta.x < size.x &&
-				    selectedPiece.position.x + 3 * Delta.x >= 0)
-					if (selectedPiece.position.y + 3 * Delta.y < size.y &&
-					    selectedPiece.position.y + 3 * Delta.y >= 0)
-						if (Map[selectedPiece.position.x + 3 * Delta.x,
-							    selectedPiece.position.y + 3 * Delta.y].Piece == null &&
-						    Map[selectedPiece.position.x + 2 * Delta.x,
-							    selectedPiece.position.y + 2 * Delta.y].Piece != null &&
-						    Map[selectedPiece.position.x + 1 * Delta.x,
-							    selectedPiece.position.y + 1 * Delta.y].Piece == null)
+				if(selectedPiece.CheckPos(selectedPiece.Pos.x + 3 * Delta.x, selectedPiece.Pos.y + 3 * Delta.y))
+						if (Map[selectedPiece.Pos.x + 3 * Delta.x,
+							    selectedPiece.Pos.y + 3 * Delta.y].piece == null &&
+						    Map[selectedPiece.Pos.x + 2 * Delta.x,
+							    selectedPiece.Pos.y + 2 * Delta.y].piece != null &&
+						    Map[selectedPiece.Pos.x + 1 * Delta.x,
+							    selectedPiece.Pos.y + 1 * Delta.y].piece == null)
 						{
 							possiblePos.Add(new Vector2Int(
-								selectedPiece.position.x + 3 * Delta.x,
-								selectedPiece.position.y + 3 * Delta.y));
+								selectedPiece.Pos.x + 3 * Delta.x,
+								selectedPiece.Pos.y + 3 * Delta.y));
 						}
 			}
 		}
 		else 
 		{
-			foreach (Vector2Int delta in selectedPiece.Moves)
+			foreach (Vector2Int Delta in selectedPiece.Offsets)
 			{
-				if (selectedPiece.position.x + delta.x <= size.x &&
-				    selectedPiece.position.x + delta.x > 0)
-					if (selectedPiece.position.y + delta.y <= size.y &&
-					    selectedPiece.position.y + delta.y > 0)
-						if (Map[selectedPiece.position.x + delta.x,
-							    selectedPiece.position.y + delta.y].Piece == null)
+				if(selectedPiece.CheckPos(selectedPiece.Pos.x + Delta.x, selectedPiece.Pos.y + Delta.y))
+						if (Map[selectedPiece.Pos.x + Delta.x,
+							    selectedPiece.Pos.y + Delta.y].piece == null)
 						{
 							possiblePos.Add(new Vector2Int(
-								selectedPiece.position.x + delta.x,
-								selectedPiece.position.y + delta.y));
+								selectedPiece.Pos.x + Delta.x,
+								selectedPiece.Pos.y + Delta.y));
 
 						}
 			}
