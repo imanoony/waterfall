@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +34,20 @@ public class Pawn : Piece
     public Pawn(Vector2Int initpos, Player owner) : base(initpos, owner)
     {
         Offsets = owner == Player.White ? new() { new(1, 0) } : new() { new(0, 1) };
+    }
+
+    // Step이 부족한데 Transform 시도를 했으면 null을 반환한다.
+    // Step이 충분한데 Transform 시도를 했다면 목표로 하는 새로운 객체를 반환한다.
+    public Piece Transform(Type type)
+    {
+        if (type == typeof(AdultPawn) && Step >= Utils.A_THRESHOLD) return new AdultPawn(Pos, Owner);
+        if (type == typeof(God) && Step >= Utils.G_THRESHOLD) return new God(Pos, Owner);
+        if (type == typeof(Bishop) && Step >= Utils.B_THRESHOLD) return new Bishop(Pos, Owner);
+        if (type == typeof(Knight) && Step >= Utils.K_THRESHOLD) return new Knight(Pos, Owner);
+        if (type == typeof(Jump) && Step >= Utils.J_THRESHOLD) return new Jump(Pos, Owner);
+
+        Debug.LogError("형태 변환을 시도했으나 걸음수가 부족하다.");
+        return null;
     }
 }
 
