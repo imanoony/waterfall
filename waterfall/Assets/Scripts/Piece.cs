@@ -13,6 +13,14 @@ public abstract class Piece
     // Piece의 새로운 위치를 설정하는 함수.
     // 불가능한 newpos가 들어올 시 false를 반환한다.
     // 성공하면 Pos를 업데이트하고 true를 반환한다.
+    public bool CheckPos(int x,int y)
+    {
+        if (x < 0 || y < 0) return false;
+        if (x == Utils.SizeX && Owner != Player.White) return false; // White만이 우측 경계를 넘을 수 있다.
+        if (y == Utils.SizeY && Owner != Player.Black) return false; // Black만이 좌측 경계를 넘을 수 있다.
+        if (x >= Utils.SizeX || y >= Utils.SizeY) return false;
+        return true;
+    }
     public bool SetPos(Vector2Int newpos)
     {
         if (newpos.x < 0 || newpos.y < 0) return false;
