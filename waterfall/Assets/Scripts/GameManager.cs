@@ -87,13 +87,38 @@ public class GameManager : MonoBehaviour {
     {
         uiManager.MainCameraMode();
         currentPiece = null;
+
+        // for test
+        InitGame();
+    }
+
+    [SerializeField] private GameObject piecePrefab;
+
+    // 각각 7개의 White Pawn, Block Pawn을 알맞은 위치에 스폰한다.
+    // 스테이지 시작 시 호출된다. 
+    public void InitGame()
+    {
+        // 루프를 두 번 돌 필요는 없지만 X, Y의 분류에 대한 통일성을 위해 두개로
+        for (int i = 1; i < Utils.SizeX; i++)
+        {
+            Pawn pawn = new(new(0, i), Player.White);
+            GameObject obj = Instantiate(piecePrefab);
+            obj.GetComponent<PieceBehaviour>().Init(pawn);
+        }
+        for (int i = 1; i < Utils.SizeY; i++)
+        {
+            Pawn pawn = new(new(i, 0), Player.Black);
+            GameObject obj = Instantiate(piecePrefab);
+            obj.GetComponent<PieceBehaviour>().Init(pawn);
+        }
     }
 
     /// <summary>
     /// 특정 piece를 선택할 경우 시점을 그 piece로 맞추어주는 함수
     /// </summary>
     /// <param name="selected"></param>
-    public void selectPiece(Piece selected){
+    public void selectPiece(Piece selected)
+    {
         currentPiece = selected;
         uiManager.PieceMode(selected);
     }
