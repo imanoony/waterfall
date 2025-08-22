@@ -4,7 +4,9 @@ using UnityEngine;
 
 public abstract class Piece
 {
-    public Vector2Int Pos { get; private set; }
+    private Vector2Int pos;
+    public Vector2Int Pos { get => pos; set { pos = value; OnPosChanged?.Invoke(pos); } }
+    public event Action<Vector2Int> OnPosChanged; // 구독자에게 알림
     public Player Owner { get; private set; }
     public List<Vector2Int> Offsets { get; protected set; }
 

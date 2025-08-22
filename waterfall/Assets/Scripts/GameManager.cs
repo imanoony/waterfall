@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework;
 using UnityEngine;
 
 public enum Player { White = 0, Black = 1 }
@@ -16,7 +17,29 @@ public static class Utils
     public static float ISO_STEP = 0.5f; // 좌표 <-> 위치 벡터 변환을 위한 값
     public static int BASE_LAYER = 15; // Piece가 위치할 기준 레이어 (최대)
 
+    // pos 정보를 확인하고 Piece가 위치해야 할 위치 벡터를 반환한다.
+    public static Vector2 PosToIso(Vector2Int pos)
+    {
+        Assert.IsTrue(pos.x < 0 || pos.y < 0 || pos.x > Utils.SizeX || pos.y > Utils.SizeY);
+
+        float isoX = pos.x * Utils.ISO_STEP + pos.y * (-1) * Utils.ISO_STEP + Utils.BASE_POSITION.x;
+        float isoY = (pos.x + pos.y) * Utils.ISO_STEP + Utils.BASE_POSITION.y;
+
+        Debug.Log($"PosToIso 결과: ({pos.x}, {pos.y}) -> ({isoX}, {isoY})");
+        return new(isoX, isoY);
+    }
+
+    // pos 정보를 확인하고 Piece가 위치해야 할 레이어를 반환한다.
+    public static int PosToLayer(Vector2Int pos)
+    {
+        Assert.IsTrue(pos.x < 0 || pos.y < 0 || pos.x > Utils.SizeX || pos.y > Utils.SizeY);
+
+        int layer = Utils.BASE_LAYER - (pos.x + pos.y);
+        Debug.Log($"PosToLayer 결과: ({pos.x}, {pos.y}) -> {layer}");
+        return layer;
+    }
 }
+
 public class GameManager : MonoBehaviour {
     private static GameManager instance;
     public static GameManager Instance
