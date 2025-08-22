@@ -11,13 +11,13 @@ public class CameraControl : MonoBehaviour
     {
         this.targetSize = 3f;
         cam.orthographicSize = 3f;
-        cam.gameObject.transform.position = new Vector3(0,0,-10);
+        cam.gameObject.transform.position = new Vector3(0,0,-20);
     }
 
     public void SetCamera(float targetSize, Vector2 targetPos)
     {
         this.targetSize = targetSize;
-        this.targetPos = new Vector3(targetPos.x,targetPos.y,-10);
+        this.targetPos = new Vector3(targetPos.x,targetPos.y,-20);
     }
 
     void Update()
