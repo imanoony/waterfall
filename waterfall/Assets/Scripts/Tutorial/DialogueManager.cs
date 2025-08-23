@@ -85,7 +85,7 @@ public class DialogueManager : MonoBehaviour
         if (eventName == "B_firstMove")
         {
              camControl.SetCamera(2f,Utils.PosToIso(new Vector2Int(0, 7)));
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
             firstMan.SetActive(true);
             OnExternalEvent("B_firstMove");
         }
@@ -98,7 +98,7 @@ public class DialogueManager : MonoBehaviour
         else if (eventName == "B_secondMove")
         {
             camControl.SetCamera(2f,Utils.PosToIso(new Vector2Int(1, 7)));
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
             firstMan.SetActive(false);
             secondMan.SetActive(true);
             OnExternalEvent("B_secondMove");
