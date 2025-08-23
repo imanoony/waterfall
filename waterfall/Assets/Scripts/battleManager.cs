@@ -142,6 +142,8 @@ public class battleManager : MonoBehaviour
 		{
 			if (offset.Equals(new(0, 0))) continue;
 			Vector2Int curr = new(god.Pos.x + offset.x, god.Pos.y + offset.y);
+			if (curr.x < 0 || curr.y < 0 || curr.x >= Utils.SizeX || curr.y >= Utils.SizeY) continue;
+			if (Utils.FORBIDDEN.Contains(curr)) continue;
 			if (Map[curr.x, curr.y].piece == null) continue;
 			if (Map[curr.x, curr.y].piece.Owner == god.Owner) continue;
 			result.Add(curr);
@@ -159,6 +161,7 @@ public class battleManager : MonoBehaviour
 		{
 			if (offset.Equals(new(0, 0))) continue;
 			Vector2Int curr = new(god.Pos.x + offset.x, god.Pos.y + offset.y);
+			if (curr.x < 0 || curr.y < 0 || curr.x >= Utils.SizeX || curr.y >= Utils.SizeY) continue;
 			if (Utils.FORBIDDEN.Contains(curr)) continue;
 			if (Map[curr.x, curr.y].piece != null) continue;
 			result.Add(curr);

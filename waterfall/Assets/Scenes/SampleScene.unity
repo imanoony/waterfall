@@ -1033,6 +1033,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiManager: {fileID: 373296825}
   battleManager: {fileID: 373296826}
+  audioManager: {fileID: 373296828}
+  main: {fileID: 8300000, guid: 3f751b0fe3cc619478d41daae6dc0209, type: 3}
+  SFX_PawnSkill: {fileID: 8300000, guid: 428c5c75cd36c5f48b8c048cfb86256c, type: 3}
+  SFX_GodSkill0: {fileID: 8300000, guid: 5a8b313df46c4a34e86087aedd2c98ab, type: 3}
+  SFX_GodSkill1: {fileID: 8300000, guid: c7a4e608419b24c48bce1378a4656491, type: 3}
+  SFX_Move: {fileID: 8300000, guid: 3aa10a070ba8e63449312f69a326c29a, type: 3}
+  SFX_Arrive: {fileID: 8300000, guid: 21ed5ab3b454d6647b3dc7c0bb9d7c3d, type: 3}
+  SFX_Select: {fileID: 8300000, guid: 7c35fb5018714544ca9c50b260b34ed4, type: 3}
   White: 0
   Black: 0
   winText: {fileID: 210768886}
@@ -1183,7 +1191,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

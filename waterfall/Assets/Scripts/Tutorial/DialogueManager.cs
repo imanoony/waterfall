@@ -7,6 +7,8 @@ using UnityEngine.Rendering;
 
 public class DialogueManager : MonoBehaviour
 {
+    public AudioManager audioManager;
+    [SerializeField] private AudioClip tutorial;
     public TMP_Text dialogueText;     // TextMeshPro UI
     public string jsonFileName = "Dialogue/test_Dialogue";       // 예: "Dialogues/tutorial" (확장자 없이)
     public CameraControl camControl;
@@ -24,6 +26,8 @@ public class DialogueManager : MonoBehaviour
         firstMan.SetActive(false);
         secondMan.SetActive(false);
         ShowLine();
+
+        audioManager.PlayBGM(tutorial);
     }
 
     void Update()
@@ -165,7 +169,7 @@ public class DialogueManager : MonoBehaviour
         int start = 0, end = lines[index].text.Length;
         if (lines[index].text[0] == '<')
         {
-            start = lines[index].text.IndexOf('>');
+            start = lines[index].text.IndexOf('>') + 1;
             end = lines[index].text.LastIndexOf('<') - 1;
         }
 
