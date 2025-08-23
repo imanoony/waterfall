@@ -107,9 +107,9 @@ public class GameManager : MonoBehaviour
     public void InitGame()
     {
         // battleManager Tilemap 세팅
-        for (int i = 0; i < Utils.SizeX; i++)
+        for (int i = 0; i < Utils.SizeX+1; i++)
         {
-            for (int j = 0; j < Utils.SizeY; j++)
+            for (int j = 0; j < Utils.SizeY+1; j++)
             {
                 battleManager.Map[i, j] = new tile();
             }

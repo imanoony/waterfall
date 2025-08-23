@@ -18,12 +18,8 @@ public class tile
 }
 public class battleManager : MonoBehaviour
 {
-	public tile[,] Map = new tile[Utils.SizeX, Utils.SizeY];
-
-	public void MoveTo(Vector2Int before, Vector2Int after)
-	{
-		
-	}
+	public tile[,] Map = new tile[Utils.SizeX+1, Utils.SizeY+1];
+	
 	public List<Vector2Int> getPossiblePosition(Piece selectedPiece)
 	{
 		List<Vector2Int> possiblePos = new List<Vector2Int>();

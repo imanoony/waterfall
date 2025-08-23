@@ -21,7 +21,7 @@ public abstract class Piece
         if (x < 0 || y < 0) return false;
         if (x == Utils.SizeX && Owner != Player.White) return false; // White만이 우측 경계를 넘을 수 있다.
         if (y == Utils.SizeY && Owner != Player.Black) return false; // Black만이 좌측 경계를 넘을 수 있다.
-        if (x >= Utils.SizeX || y >= Utils.SizeY) return false;
+        if (x > Utils.SizeX || y > Utils.SizeY) return false;
         return true;
     }
     public bool SetPos(Vector2Int newpos)
@@ -29,7 +29,7 @@ public abstract class Piece
         if (newpos.x < 0 || newpos.y < 0) return false;
         if (newpos.x == Utils.SizeX && Owner != Player.White) return false; // White만이 우측 경계를 넘을 수 있다.
         if (newpos.y == Utils.SizeY && Owner != Player.Black) return false; // Black만이 좌측 경계를 넘을 수 있다.
-        if (newpos.x >= Utils.SizeX || newpos.y >= Utils.SizeY) return false;
+        if (newpos.x > Utils.SizeX || newpos.y > Utils.SizeY) return false;
 
         Pos = newpos;
         return true;
@@ -89,10 +89,10 @@ public class God : Piece
     {
         Offsets = new()
         {
-            new(1,0), new(2,0),
-            new(0,1), new(0,2),
-            new(-1,0), new(-2,0),
-            new(0,-1), new(0,-2)
+            new(1,0),
+            new(0,1),
+            new(-1,0),
+            new(0,-1)
         };
     }
     public override bool CheckPos(int x,int y)
