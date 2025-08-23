@@ -1,21 +1,27 @@
 using System.Collections;
+using System.Net;
 using UnityEngine;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine.Rendering;
 
 public class DialogueManager : MonoBehaviour
 {
     public TMP_Text dialogueText;     // TextMeshPro UI
     public string jsonFileName = "Dialogue/test_Dialogue";       // 예: "Dialogues/tutorial" (확장자 없이)
-
+    public CameraControl camControl;
     private DialogueLine[] lines;
     private int index;
     private bool waitingForClick;
     private string waitingForEvent;
     private Coroutine currentTyping;
+    public GameObject firstMan;
+    public GameObject secondMan;
     void Start()
     {
         LoadDialogueData(jsonFileName);
+        firstMan.SetActive(false);
+        secondMan.SetActive(false);
         ShowLine();
     }
 
@@ -58,7 +64,10 @@ public class DialogueManager : MonoBehaviour
         currentTyping = StartCoroutine(_typing());
         waitingForClick = line.waitForClick;
         waitingForEvent = line.triggerEvent;
-
+        if (!string.IsNullOrEmpty(waitingForEvent) && waitingForEvent.StartsWith("B_"))
+        {
+            StartCoroutine(ExternalEvent(waitingForEvent));
+        }
         // 클릭도 아니고 이벤트도 없으면 자동으로 바로 다음으로 진행
         if (!waitingForClick && string.IsNullOrEmpty(waitingForEvent))
         {
@@ -71,10 +80,40 @@ public class DialogueManager : MonoBehaviour
         index++;
         ShowLine();
     }
-
+    public IEnumerator ExternalEvent(string eventName)
+    {
+        if (eventName == "B_firstMove")
+        {
+             camControl.SetCamera(2f,Utils.PosToIso(new Vector2Int(0, 7)));
+            yield return new WaitForSeconds(2f);
+            firstMan.SetActive(true);
+            OnExternalEvent("B_firstMove");
+        }
+        else if (eventName == "firstMove")
+        {
+            camControl.SetCamera(3f,Vector2.zero);
+            yield return new WaitForSeconds(0.5f);
+            OnExternalEvent("firstMove");
+        }
+        else if (eventName == "B_secondMove")
+        {
+            camControl.SetCamera(2f,Utils.PosToIso(new Vector2Int(1, 7)));
+            yield return new WaitForSeconds(2f);
+            firstMan.SetActive(false);
+            secondMan.SetActive(true);
+            OnExternalEvent("B_secondMove");
+        }
+        else if (eventName == "secondMove")
+        {
+            camControl.SetCamera(3f,Vector2.zero);
+            yield return new WaitForSeconds(2f);
+            OnExternalEvent("secondMove");
+        }
+    }
     // 외부에서 이벤트를 발생시킬 때 호출
     public void OnExternalEvent(string eventName)
     {
+        Debug.LogError(waitingForEvent);
         if (!string.IsNullOrEmpty(waitingForEvent) && waitingForEvent == eventName)
         {
             waitingForEvent = null;
@@ -87,7 +126,7 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         gameObject.SetActive(false);
     }
-
+    
     IEnumerator _typing()
     {
         yield return new WaitForSeconds(0.3f);

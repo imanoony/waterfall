@@ -91,7 +91,7 @@ public class battleManager : MonoBehaviour
 					}
 			}
 		}
-		{
+		else{
 			foreach (Vector2Int Delta in selectedPiece.Offsets)
 			{
 				if(selectedPiece.CheckPos(selectedPiece.Pos.x + Delta.x, selectedPiece.Pos.y + Delta.y))
