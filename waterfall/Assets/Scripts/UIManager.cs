@@ -142,7 +142,7 @@ public class UIManager : MonoBehaviour
 	private List<Vector2Int> godHits = new()
 	{
 		new(0,0), new(0,-1), new(-1,-1), new(-1,0),
-		new(-1,1), new(1,0), new(1,1), new(0,1),  new(1,-1)
+		new(-1,1), new(0,1), new(1,1), new(1,0),  new(1,-1)
 	};
 
 	// God Panel이 active 상태일 때 움직일 piece 고르기 단계에서 호출된다.

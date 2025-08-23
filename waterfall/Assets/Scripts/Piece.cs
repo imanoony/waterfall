@@ -129,7 +129,11 @@ public class Knight : Piece
 {
     public Knight(Vector2Int initpos, Player owner) : base(initpos, owner)
     {
-        Offsets = new() { new(1, 2), new(-1, 2), new(1, -2), new(-1, -2) };
+        Offsets = new()
+        {
+            new(1,2), new(-1,2), new(1,-2), new(-1,-2),
+            new(2,1), new(2,-1), new(-2,1), new(-2,-1)
+        };
     }
 }
 
