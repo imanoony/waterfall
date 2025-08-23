@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
     // 저장 순서는 P, A, G, B, K, J
     public TMP_Text winText;
     public bool isGameOver = false;
-    
+    public GameObject restartButton;
     [SerializeField] private Sprite[] whiteSprites = new Sprite[6];
     [SerializeField] private Sprite[] blackSprites = new Sprite[6];
     public Sprite GetSprite(Piece piece)
@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject piecePrefab;
     [SerializeField] private GameObject hitPrefab;
-    private GameObject[] hits = new GameObject[8];
+    private GameObject[] hits = new GameObject[Utils.MAX_HIT];
     private List<GameObject> pieces = new List<GameObject>();
     public void GetPoint(Player target)
     {
@@ -137,12 +137,14 @@ public class GameManager : MonoBehaviour
         if (White >= 3)
         {
             winText.gameObject.SetActive(true);
+            restartButton.gameObject.SetActive(true);
             winText.text = "백팀의 신이 승리하셨습니다.";
             isGameOver = true;
         }
         else if (Black >= 3)
         {
             winText.gameObject.SetActive(true);
+            restartButton.gameObject.SetActive(true);
             winText.text = "흑팀의 신이 승리하셨습니다.";
             isGameOver = true;
         }
@@ -151,7 +153,7 @@ public class GameManager : MonoBehaviour
     // 스테이지 시작 시 호출된다. 
     public void InitGame()
     {
-
+        restartButton.gameObject.SetActive(false);
         uiManager.MainCameraMode();
         currentPiece = null;
         isGameOver = false;
@@ -202,16 +204,19 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        OnPlayerChanged = null;
+        restartButton.gameObject.SetActive(false);
+        foreach (GameObject obj in pieces.ToArray())
+        {
+            Destroy(obj);
+        }
+        currentPlayer = Player.White;
         uiManager.MainCameraMode();
         currentPiece = null;
         isGameOver = false;
         White = 0;
         Black = 0;
         winText.text = White + " : " + Black;
-        foreach (GameObject obj in pieces.ToArray())
-        {
-            Destroy(obj);
-        }
         pieces.Clear();
         // battleManager Tilemap 세팅
         for (int i = 0; i < Utils.SizeX+1; i++)
