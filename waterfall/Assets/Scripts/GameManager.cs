@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public enum Player { White = 0, Black = 1 }
 
@@ -26,6 +23,7 @@ public static class Utils
     public static float ALPHA_LOW = 0.2f; // 반투명하게 만들 때 alpha 값
     public static string WHITE = "#FFFFFF";
     public static string GREY = "#A7A7A7";
+    public static Vector2 REF_RESOLUTION = new(1920, 1080);
     public static List<Vector2Int> FORBIDDEN = new()
     {
         new(0,0), new(8,8), new(0,8), new(8,0)
@@ -36,8 +34,6 @@ public static class Utils
     // pos 정보를 확인하고 Piece가 위치해야 할 위치 벡터를 반환한다.
     public static Vector2 PosToIso(Vector2Int pos)
     {
-        Assert.IsFalse(pos.x < 0 || pos.y < 0 || pos.x > Utils.SizeX || pos.y > Utils.SizeY);
-
         float isoX = pos.x * Utils.ISO_STEP + pos.y * (-1) * Utils.ISO_STEP + Utils.BASE_POSITION.x;
         float isoY = (pos.x + pos.y) * Utils.ISO_STEP / 2 + Utils.BASE_POSITION.y;
 
@@ -48,8 +44,6 @@ public static class Utils
     // pos 정보를 확인하고 Piece가 위치해야 할 레이어를 반환한다.
     public static int PosToLayer(Vector2Int pos)
     {
-        Assert.IsFalse(pos.x < 0 || pos.y < 0 || pos.x > Utils.SizeX || pos.y > Utils.SizeY);
-
         int layer = Utils.BASE_LAYER - (pos.x + pos.y);
         Debug.Log($"PosToLayer 결과: ({pos.x}, {pos.y}) -> {layer}");
         return layer;
@@ -136,7 +130,18 @@ public class GameManager : MonoBehaviour
     }
     public void Start()
     { // for test
+        SizeResolution();
         InitGame();
+    }
+
+    private void SizeResolution()
+    {
+        //float widthRatio = (float)Screen.width / Utils.REF_RESOLUTION.x;
+        float heightRatio = (float)Screen.height / Utils.REF_RESOLUTION.y;
+
+        GameObject resolution = uiManager.godPanel.transform.GetChild(0).gameObject;
+        Vector3 scale = resolution.GetComponent<RectTransform>().localScale;
+        resolution.GetComponent<RectTransform>().localScale = new(scale.x * heightRatio, scale.y * heightRatio);
     }
 
     [SerializeField] private GameObject piecePrefab;

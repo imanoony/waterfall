@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
 	public Dictionary<string, TooltipData> tooltipDict = new Dictionary<string, TooltipData>();
 	public TMP_Text name_Text;
 	public TMP_Text explainingText;
+	
 	/// <summary>
 	/// 카메라를 전체 카메라로 변경
 	/// </summary>
@@ -23,7 +24,7 @@ public class UIManager : MonoBehaviour
 	{
 		GameManager.Instance.winText.gameObject.SetActive(true);
 		if (!GameManager.Instance.isGameOver) GameManager.Instance.turnText.gameObject.SetActive(true);
-		control.SetCamera(3f,new(0, 0.7f));
+		control.SetCamera(3f, new(0, 0.7f));
 		foreach (tile tile in GameManager.Instance.battleManager.Map)
 		{
 			if (tile != null && tile.piece != null && GameManager.Instance.currentPlayer == tile.piece.Owner)
@@ -162,7 +163,7 @@ public class UIManager : MonoBehaviour
 			int i = newHits.IndexOf(pos);
 			Debug.Log($"Get God Target Piece의 결과 {i}: {pos}");
 			if (i < 0) continue;
-			godPanel.transform.GetChild(i).gameObject.SetActive(true);
+			godPanel.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
 		}
 
 		// 움직일 수 있는 piece가 존재하지 않는 경우 바로 턴을 넘긴다.
@@ -185,13 +186,13 @@ public class UIManager : MonoBehaviour
 			int i = newHits.IndexOf(pos);
 			Debug.Log($"Get God Target Pos의 결과 {i}: {pos}");
 			if (i < 0) continue;
-			godPanel.transform.GetChild(i).gameObject.SetActive(true);
+			godPanel.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
 		}
 	}
 
 	// God Panel의 모든 자식 오브젝트 끄기 함수
 	private void GodPanelInit()
 	{
-		for (int i = 0; i < 9; i++) godPanel.transform.GetChild(i).gameObject.SetActive(false);
+		for (int i = 0; i < 9; i++) godPanel.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
 	}
 }
