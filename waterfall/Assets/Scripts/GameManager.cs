@@ -93,18 +93,14 @@ public class GameManager : MonoBehaviour
         return target[5];
     }
     public void Start()
-    {
-        uiManager.MainCameraMode();
-        currentPiece = null;
-
-        // for test
+    { // for test
         InitGame();
     }
 
     [SerializeField] private GameObject piecePrefab;
     [SerializeField] private GameObject hitPrefab;
     private GameObject[] hits = new GameObject[8];
-
+    private List<GameObject> pieces = new List<GameObject>();
     public void GetPoint(Player target)
     {
         if (target == Player.White)
@@ -134,6 +130,9 @@ public class GameManager : MonoBehaviour
     // 스테이지 시작 시 호출된다. 
     public void InitGame()
     {
+        
+        uiManager.MainCameraMode();
+        currentPiece = null;
         isGameOver = false;
         White = 0;
         Black = 0;
@@ -152,12 +151,14 @@ public class GameManager : MonoBehaviour
             Pawn pawn = new(new(0, i), Player.White);
             GameObject obj = Instantiate(piecePrefab);
             obj.GetComponent<PieceBehaviour>().Init(pawn);
+            pieces.Add(obj);
             battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = pawn;
         }
         for (int i = 1; i < Utils.SizeY; i++)
         {
             Pawn pawn = new(new(i, 0), Player.Black);
             GameObject obj = Instantiate(piecePrefab);
+            pieces.Add(obj);
             obj.GetComponent<PieceBehaviour>().Init(pawn);
             battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = pawn;
         }
@@ -172,6 +173,46 @@ public class GameManager : MonoBehaviour
         foreach (TooltipData data in uiManager.tooltips)
         {
             uiManager.tooltipDict.Add(data.Name, data);
+        }
+    }
+
+    public void RestartGame()
+    {
+        uiManager.MainCameraMode();
+        currentPiece = null;
+        isGameOver = false;
+        White = 0;
+        Black = 0;
+        winText.text = White + " : " + Black;
+        foreach (GameObject obj in pieces.ToArray())
+        {
+            Destroy(obj);
+        }
+        pieces.Clear();
+        // battleManager Tilemap 세팅
+        for (int i = 0; i < Utils.SizeX+1; i++)
+        {
+            for (int j = 0; j < Utils.SizeY+1; j++)
+            {
+                battleManager.Map[i, j] = new tile();
+            }
+        }
+        // 루프를 두 번 돌 필요는 없지만 X, Y의 분류에 대한 통일성을 위해 두개로
+        for (int i = 1; i < Utils.SizeX; i++)
+        {
+            Pawn pawn = new(new(0, i), Player.White);
+            GameObject obj = Instantiate(piecePrefab);
+            obj.GetComponent<PieceBehaviour>().Init(pawn);
+            pieces.Add(obj);
+            battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = pawn;
+        }
+        for (int i = 1; i < Utils.SizeY; i++)
+        {
+            Pawn pawn = new(new(i, 0), Player.Black);
+            GameObject obj = Instantiate(piecePrefab);
+            obj.GetComponent<PieceBehaviour>().Init(pawn);
+            pieces.Add(obj);
+            battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = pawn;
         }
     }
 
