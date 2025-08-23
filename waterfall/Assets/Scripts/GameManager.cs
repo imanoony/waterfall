@@ -20,6 +20,8 @@ public static class Utils
     public static float ISO_STEP = 0.5f; // 좌표 <-> 위치 벡터 변환을 위한 값
     public static int BASE_LAYER = 15; // Piece가 위치할 기준 레이어 (최대)
     public static int MAX_HIT = 8; // 한번에 생길 수 있는 최대 Hit 수
+    public static float ALPHA_HIGH = 1; // 불투명하게 만들 때 alpha 값
+    public static float ALPHA_LOW = 0.2f; // 반투명하게 만들 때 alpha 값
 
     // pos 정보를 확인하고 Piece가 위치해야 할 위치 벡터를 반환한다.
     public static Vector2 PosToIso(Vector2Int pos)

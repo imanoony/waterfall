@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
 		{
 			if (pawn.Step >= 2)
 			{
-				StartCoroutine(openPawnPanel());
+				StartCoroutine(openPawnPanel((Pawn)selected));
 			}
 			else
 			{
@@ -60,11 +60,27 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
-	IEnumerator openPawnPanel()
+	// pawn panel의 자식 순서: A, B, J, K, G
+	IEnumerator openPawnPanel(Pawn selected)
 	{
 		yield return new WaitForSeconds(0.5f);
 		pawnPanel.SetActive(true);
 		godPanel.SetActive(false);
+
+		int[] thresholds = new int[]
+		{
+			Utils.A_THRESHOLD,
+			Utils.B_THRESHOLD,
+			Utils.J_THRESHOLD,
+			Utils.K_THRESHOLD,
+			Utils.G_THRESHOLD
+		};
+
+		for (int i = 0; i < thresholds.Length; i++)
+		{
+			float alpha = (selected.Step >= thresholds[i]) ? Utils.ALPHA_HIGH : Utils.ALPHA_LOW;
+			pawnPanel.transform.GetChild(i).GetComponent<CanvasGroup>().alpha = alpha;
+		}
 	}
 	IEnumerator openGodPanel()
 	{

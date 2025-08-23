@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public abstract class Piece
@@ -40,7 +41,11 @@ public abstract class Piece
 public class Pawn : Piece
 {
     public int Step { get; private set; }
-    public void AddStep() => Step++;
+    public void AddStep()
+    {
+        Step++;
+        Debug.Log($"[Pawn {RuntimeHelpers.GetHashCode(this)}] 현재 Step: {Step}");
+    }
     public Pawn(Vector2Int initpos, Player owner) : base(initpos, owner)
     {
         Offsets = owner == Player.White ? new() { new(1, 0) } : new() { new(0, 1) };
