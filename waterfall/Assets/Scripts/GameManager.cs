@@ -97,6 +97,20 @@ public class GameManager : MonoBehaviour
     public Piece currentPiece;
     private PieceBehaviour pieceBehaviour;
     public battleManager battleManager;
+
+    #region Audio
+    [Header("Audio")]
+    public AudioManager audioManager;
+    [SerializeField] private AudioClip main;
+    public AudioClip SFX_PawnSkill; // 진화
+    public AudioClip SFX_GodSkill0; // 신의 능력: 선택
+    public AudioClip SFX_GodSkill1; // 신의 능력: 이동
+    public AudioClip SFX_Move; // 이동
+    public AudioClip SFX_Arrive; // 도착
+    public AudioClip SFX_Select; // piece 선택
+    #endregion
+
+    [Header("ETC")]
     public int White = 0;
     public int Black = 0;
     private bool isSelectingPiece =false; // 클릭 취소 가능 여부 확인
@@ -145,6 +159,7 @@ public class GameManager : MonoBehaviour
         {
             winText.gameObject.SetActive(true);
             restartButton.gameObject.SetActive(true);
+            turnText.gameObject.SetActive(false);
             winText.text = "백팀의 신이 승리하셨습니다.";
             isGameOver = true;
         }
@@ -152,9 +167,13 @@ public class GameManager : MonoBehaviour
         {
             winText.gameObject.SetActive(true);
             restartButton.gameObject.SetActive(true);
+            turnText.gameObject.SetActive(false);
             winText.text = "흑팀의 신이 승리하셨습니다.";
             isGameOver = true;
         }
+
+        audioManager.PlaySFX(SFX_Arrive);
+        if (isGameOver) audioManager.StopBGM();
     }
     // 각각 7개의 White Pawn, Block Pawn을 알맞은 위치에 스폰한다.
     // 스테이지 시작 시 호출된다. 
@@ -206,8 +225,10 @@ public class GameManager : MonoBehaviour
         {
             uiManager.tooltipDict.Add(data.Name, data);
         }
-        
+
         currentPlayer = Player.White;
+        
+        audioManager.PlayBGM(main);
     }
 
     public void RestartGame()
@@ -228,9 +249,9 @@ public class GameManager : MonoBehaviour
         turnText.text = Utils.TURN_WHITE;
         pieces.Clear();
         // battleManager Tilemap 세팅
-        for (int i = 0; i < Utils.SizeX+1; i++)
+        for (int i = 0; i < Utils.SizeX + 1; i++)
         {
-            for (int j = 0; j < Utils.SizeY+1; j++)
+            for (int j = 0; j < Utils.SizeY + 1; j++)
             {
                 battleManager.Map[i, j] = new tile();
             }
@@ -252,6 +273,8 @@ public class GameManager : MonoBehaviour
             pieces.Add(obj);
             battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = pawn;
         }
+
+        audioManager.PlayBGM(main);
     }
 
     /// <summary>
@@ -265,6 +288,8 @@ public class GameManager : MonoBehaviour
         uiManager.PieceMode(selected);
         PlaceHits(battleManager.getPossiblePosition(selected));
         isSelectingPiece = true;
+
+        audioManager.PlaySFX(SFX_Select);
     }
 
     public void showTooltip(string name)
@@ -303,6 +328,8 @@ public class GameManager : MonoBehaviour
             battleManager.Map[currentPiece.Pos.x, currentPiece.Pos.y].piece = null;
             battleManager.Map[position.x, position.y].piece = currentPiece;
             currentPiece.SetPos(position);
+
+            audioManager.PlaySFX(SFX_Move);
         }
 
         if (currentPiece is Pawn pawn)
@@ -353,6 +380,8 @@ public class GameManager : MonoBehaviour
             {
                 battleManager.Map[pawn.Pos.x, pawn.Pos.y].piece = newPiece;
                 pieceBehaviour.Init(newPiece);
+
+                audioManager.PlaySFX(SFX_PawnSkill);
                 endTurn();
             }
         }
@@ -407,6 +436,8 @@ public class GameManager : MonoBehaviour
                             .piece;
                         god.skillPhase = 1;
                         uiManager.GodPanelSelectPos((God)currentPiece);
+
+                        audioManager.PlaySFX(SFX_GodSkill0);
                     }
                 }
                 else if (god.skillPhase == 1)
@@ -414,13 +445,16 @@ public class GameManager : MonoBehaviour
                     if (battleManager.Map[currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y].piece ==
                         null && god.Target != null)
                     {
-                        battleManager.Map[god.Target.Pos.x,god.Target.Pos.y].piece = null;
+                        battleManager.Map[god.Target.Pos.x, god.Target.Pos.y].piece = null;
                         battleManager.Map[currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y].piece =
                             god.Target;
                         god.Target.SetPos(new Vector2Int(currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y));
                         god.Target = null;
                         god.skillPhase = 0;
                         StartCoroutine(DelayEnd());
+
+                        audioManager.PlaySFX(SFX_GodSkill1);
+                        endTurn();
                     }
                 }
             }
