@@ -35,6 +35,12 @@ public class PieceBehaviour : MonoBehaviour
     // 이 Piece를 움직이겠다는 선택 감지
     void OnMouseDown()
     {
-        if (GameManager.Instance.currentPiece == null && GameManager.Instance.currentPlayer == piece.Owner) GameManager.Instance.selectPiece(piece, this);
+        if (GameManager.Instance.isGameOver == true)
+        {
+            return;
+        }
+        if (GameManager.Instance.currentPiece == null && GameManager.Instance.currentPlayer == piece.Owner) 
+            if(piece.Pos.x < Utils.SizeX && piece.Pos.y < Utils.SizeY)
+                GameManager.Instance.selectPiece(piece, this);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -22,7 +23,6 @@ public static class Utils
     public static int MAX_HIT = 8; // 한번에 생길 수 있는 최대 Hit 수
     public static float ALPHA_HIGH = 1; // 불투명하게 만들 때 alpha 값
     public static float ALPHA_LOW = 0.2f; // 반투명하게 만들 때 alpha 값
-
     // pos 정보를 확인하고 Piece가 위치해야 할 위치 벡터를 반환한다.
     public static Vector2 PosToIso(Vector2Int pos)
     {
@@ -73,9 +73,13 @@ public class GameManager : MonoBehaviour
     public Piece currentPiece;
     private PieceBehaviour pieceBehaviour;
     public battleManager battleManager;
-
+    public int White = 0;
+    public int Black = 0;
     private bool isSelectingPiece =false; // 클릭 취소 가능 여부 확인
     // 저장 순서는 P, A, G, B, K, J
+    public TMP_Text winText;
+    public bool isGameOver = false;
+    
     [SerializeField] private Sprite[] whiteSprites = new Sprite[6];
     [SerializeField] private Sprite[] blackSprites = new Sprite[6];
     public Sprite GetSprite(Piece piece)
@@ -88,7 +92,6 @@ public class GameManager : MonoBehaviour
         if (piece is Knight) return target[4];
         return target[5];
     }
-
     public void Start()
     {
         uiManager.MainCameraMode();
@@ -102,10 +105,39 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject hitPrefab;
     private GameObject[] hits = new GameObject[8];
 
+    public void GetPoint(Player target)
+    {
+        if (target == Player.White)
+        {
+            White++;
+        }
+        else
+        {
+            Black++;
+        }
+        winText.text = White + " : " + Black;
+
+        if (White >= 3)
+        {
+            winText.gameObject.SetActive(true);
+            winText.text = "백팀의 신이 승리하셨습니다.";
+            isGameOver = true;
+        }
+        else if (Black >= 3)
+        {
+            winText.gameObject.SetActive(true);
+            winText.text = "흑팀의 신이 승리하셨습니다.";
+            isGameOver = true;
+        }
+    }
     // 각각 7개의 White Pawn, Block Pawn을 알맞은 위치에 스폰한다.
     // 스테이지 시작 시 호출된다. 
     public void InitGame()
     {
+        isGameOver = false;
+        White = 0;
+        Black = 0;
+        winText.text = White + " : " + Black;
         // battleManager Tilemap 세팅
         for (int i = 0; i < Utils.SizeX+1; i++)
         {
