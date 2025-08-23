@@ -111,6 +111,7 @@ public class God : Piece
     }
     public override bool CheckPos(int x,int y)
     {
+        if (x == 0 && y == 0) return false;
         if (x < 0 || y < 0) return false;
         if (x >= Utils.SizeX || y >= Utils.SizeY) return false;
         return true;

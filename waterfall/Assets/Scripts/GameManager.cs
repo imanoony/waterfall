@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -104,6 +105,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text turnText;
     public bool isGameOver = false;
     public GameObject restartButton;
+
+    public GameObject pawnTooltip;
+    public TMP_Text pawnText;
     [SerializeField] private Sprite[] whiteSprites = new Sprite[6];
     [SerializeField] private Sprite[] blackSprites = new Sprite[6];
     public Sprite GetSprite(Piece piece)
@@ -263,6 +267,18 @@ public class GameManager : MonoBehaviour
         isSelectingPiece = true;
     }
 
+    public void showTooltip(string name)
+    {
+        pawnTooltip.gameObject.SetActive(true);
+        TooltipData data = uiManager.tooltipDict[name];
+        pawnText.text = data.description;
+    }
+
+    public void hideTooltip()
+    {
+        pawnTooltip.gameObject.SetActive(false);
+    }
+
     public void StopSelecting()
     {
         if (!isSelectingPiece)
@@ -404,12 +420,18 @@ public class GameManager : MonoBehaviour
                         god.Target.SetPos(new Vector2Int(currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y));
                         god.Target = null;
                         god.skillPhase = 0;
-                        endTurn();
+                        StartCoroutine(DelayEnd());
                     }
                 }
             }
         }
+    }
 
+    IEnumerator DelayEnd()
+    {
+        yield return new WaitForSeconds(0.5f);
+        endTurn();
+        
     }
     /// <summary>
     /// 현재 턴을 다음 차례에게 넘긴다.

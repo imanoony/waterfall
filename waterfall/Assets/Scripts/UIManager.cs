@@ -91,6 +91,7 @@ public class UIManager : MonoBehaviour
 			if (pawn.Step >= 2)
 			{
 				StartCoroutine(openPawnPanel((Pawn)selected));
+				GameManager.Instance.hideTooltip();
 			}
 			else
 			{
