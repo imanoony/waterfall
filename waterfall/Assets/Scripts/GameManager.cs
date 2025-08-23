@@ -29,6 +29,8 @@ public static class Utils
     {
         new(0,0), new(8,8), new(0,8), new(8,0)
     };
+    public static string TURN_WHITE = "하얀 신의 차례";
+    public static string TURN_BLACK = "검은 신의 차례";
 
     // pos 정보를 확인하고 Piece가 위치해야 할 위치 벡터를 반환한다.
     public static Vector2 PosToIso(Vector2Int pos)
@@ -99,6 +101,7 @@ public class GameManager : MonoBehaviour
     private bool isSelectingPiece =false; // 클릭 취소 가능 여부 확인
     // 저장 순서는 P, A, G, B, K, J
     public TMP_Text winText;
+    public TMP_Text turnText;
     public bool isGameOver = false;
     public GameObject restartButton;
     [SerializeField] private Sprite[] whiteSprites = new Sprite[6];
@@ -160,6 +163,7 @@ public class GameManager : MonoBehaviour
         White = 0;
         Black = 0;
         winText.text = White + " : " + Black;
+        turnText.text = Utils.TURN_WHITE;
 
         // battleManager Tilemap 세팅
         for (int i = 0; i < Utils.SizeX + 1; i++)
@@ -217,6 +221,7 @@ public class GameManager : MonoBehaviour
         White = 0;
         Black = 0;
         winText.text = White + " : " + Black;
+        turnText.text = Utils.TURN_WHITE;
         pieces.Clear();
         // battleManager Tilemap 세팅
         for (int i = 0; i < Utils.SizeX+1; i++)
@@ -414,10 +419,12 @@ public class GameManager : MonoBehaviour
         if (currentPlayer == Player.White)
         {
             currentPlayer = Player.Black;
+            turnText.text = Utils.TURN_BLACK;
         }
         else
         {
             currentPlayer = Player.White;
+            turnText.text = Utils.TURN_WHITE;
         }
 
         currentPiece = null;

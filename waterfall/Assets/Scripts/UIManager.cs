@@ -22,7 +22,8 @@ public class UIManager : MonoBehaviour
 	public void MainCameraMode()
 	{
 		GameManager.Instance.winText.gameObject.SetActive(true);
-		control.SetCamera(3f,Vector2.zero);
+		GameManager.Instance.turnText.gameObject.SetActive(true);
+		control.SetCamera(3f,new(0, 0.7f));
 		foreach (tile tile in GameManager.Instance.battleManager.Map)
 		{
 			if (tile != null && tile.piece != null && GameManager.Instance.currentPlayer == tile.piece.Owner)
@@ -41,6 +42,7 @@ public class UIManager : MonoBehaviour
 	public void PieceMode(Piece selected)
 	{
 		GameManager.Instance.winText.gameObject.SetActive(false);
+		GameManager.Instance.turnText.gameObject.SetActive(false);
 		control.SetCamera(2f, Utils.PosToIso(selected.Pos));
 		pawnPanel.SetActive(false);
 		godPanel.SetActive(false);
@@ -78,6 +80,7 @@ public class UIManager : MonoBehaviour
 	public void SkillMode(Piece selected)
 	{
 		GameManager.Instance.winText.gameObject.SetActive(false);
+		GameManager.Instance.turnText.gameObject.SetActive(false);
 		control.SetCamera(2f, Utils.PosToIso(selected.Pos));
 		if (selected is God)
 		{

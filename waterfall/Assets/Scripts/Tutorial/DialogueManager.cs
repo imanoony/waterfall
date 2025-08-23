@@ -15,6 +15,7 @@ public class DialogueManager : MonoBehaviour
     private bool waitingForClick;
     private string waitingForEvent;
     private Coroutine currentTyping;
+    private bool isTyping = false;
     public GameObject firstMan;
     public GameObject secondMan;
     void Start()
@@ -30,7 +31,8 @@ public class DialogueManager : MonoBehaviour
         if (waitingForClick && Input.GetMouseButtonDown(0))
         {
             waitingForClick = false;
-            NextLine();
+            if (isTyping) SkipTyping();
+            else NextLine();
         }
     }
 
@@ -56,10 +58,11 @@ public class DialogueManager : MonoBehaviour
             return;
         }
         var line = lines[index];
-        if (currentTyping != null)
-        {
-            StopCoroutine(currentTyping);
-        }
+        //if (currentTyping != null)
+        //{
+        //    StopCoroutine(currentTyping);
+        //    isTyping = false;
+        //}
 
         currentTyping = StartCoroutine(_typing());
         waitingForClick = line.waitForClick;
@@ -73,6 +76,20 @@ public class DialogueManager : MonoBehaviour
         {
             Invoke(nameof(NextLine), 0.5f);
         }
+    }
+
+    // _typing 코루틴이 실행되고 있을 때면 코루틴을 종료하고 
+    // 버퍼 속 남은 문자열을 한꺼번에 바로 출력한다.
+    private void SkipTyping()
+    {
+        if (!isTyping) return;
+        if (currentTyping == null) return;
+
+        StopCoroutine(currentTyping);
+        dialogueText.text = lines[index].text;
+        waitingForClick = lines[index].waitForClick;
+        waitingForEvent = lines[index].triggerEvent;
+        isTyping = false;
     }
 
     void NextLine()
@@ -91,7 +108,7 @@ public class DialogueManager : MonoBehaviour
         }
         else if (eventName == "firstMove")
         {
-            camControl.SetCamera(3f,Vector2.zero);
+            camControl.SetCamera(3f,new(0, 0.7f));
             yield return new WaitForSeconds(0.5f);
             OnExternalEvent("firstMove");
         }
@@ -105,7 +122,7 @@ public class DialogueManager : MonoBehaviour
         }
         else if (eventName == "secondMove")
         {
-            camControl.SetCamera(3f,Vector2.zero);
+            camControl.SetCamera(3f, new(0, 0.7f));
             yield return new WaitForSeconds(2f);
             OnExternalEvent("secondMove");
         }
@@ -139,14 +156,24 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         gameObject.SetActive(false);
     }
-    
+
     IEnumerator _typing()
     {
+        isTyping = true;
         yield return new WaitForSeconds(0.3f);
-        for (int i = 0; i <= lines[index].text.Length; i++)
+
+        int start = 0, end = lines[index].text.Length;
+        if (lines[index].text[0] == '<')
         {
-            dialogueText.text = lines[index].text.Substring(0, i);
+            start = lines[index].text.IndexOf('>');
+            end = lines[index].text.LastIndexOf('<') - 1;
+        }
+
+        for (int i = start; i <= end; i++)
+        {
+            dialogueText.text = i != end ? lines[index].text.Substring(0, i) : lines[index].text;
             yield return new WaitForSeconds(0.05f);
         }
+        isTyping = false;
     }
 }

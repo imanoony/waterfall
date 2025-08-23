@@ -6,12 +6,12 @@ public class CameraControl : MonoBehaviour
     public Camera cam;              // 바꿀 카메라
     private float targetSize = 5f;   // 목표 사이즈
     private float lerpSpeed = 5f;    // 보간 속도 (값이 클수록 빠르게 따라감)
-    private Vector3 targetPos = new Vector3(0,0,-10);
+    private Vector3 targetPos = new Vector3(0,0.7f,-10);
     private void Start()
     {
         this.targetSize = 3f;
         cam.orthographicSize = 3f;
-        cam.gameObject.transform.position = new Vector3(0,0,-20);
+        cam.gameObject.transform.position = new Vector3(0,0.7f,-20);
     }
 
     public void SetCamera(float targetSize, Vector2 targetPos)
