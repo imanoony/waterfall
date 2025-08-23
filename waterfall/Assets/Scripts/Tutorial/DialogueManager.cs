@@ -109,6 +109,19 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(2f);
             OnExternalEvent("secondMove");
         }
+        else if (eventName == "B_GameEnd")
+        {
+            SceneChanger sceneChanger = FindObjectOfType<SceneChanger>();
+            if (sceneChanger != null)
+            {
+                sceneChanger.changeScene("FrontScene");
+            }
+            else
+            {
+                Debug.LogWarning("SceneChanger not found in the scene!");
+            }
+        }
+
     }
     // 외부에서 이벤트를 발생시킬 때 호출
     public void OnExternalEvent(string eventName)

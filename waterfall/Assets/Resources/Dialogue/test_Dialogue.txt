@@ -5,7 +5,7 @@
     { "text": "소멸 여부를 두고 벌이는 최후의 전투", "waitForClick": true, "triggerEvent": "" },
     { "text": "자신의 신도들을 구원해야만 다시 신앙력을 회복할 수 있을 것이다.", "waitForClick": true, "triggerEvent": "" },
     { "text": "오직 생존할 수 있는 신은 한 명", "waitForClick": true, "triggerEvent": "" },
-    { "text": "둘 중 더 먼저 충분한 수의 신도를 구하는 자가 살아남을 것이다.", "waitForClick": true, "triggerEvent": "" },
+    { "text": "둘 중 더 먼저 3명의 신도를 구하는 자가 살아남을 것이다.", "waitForClick": true, "triggerEvent": "" },
     { "text": "음? 그대는 처음 이곳에 온 것 같으니 특별히 설명해주도록 하겠다.", "waitForClick": true, "triggerEvent": "" },
     { "text": "먼저, 모든 신도는 시민으로 시작한다.", "waitForClick": true, "triggerEvent": "" },
     { "text": "시민은 한 번 이동할 때 전방으로만 한 칸 이동할 수 있다.", "waitForClick": false, "triggerEvent": "B_firstMove" },
@@ -16,14 +16,7 @@
     { "text": "우선 다시 한 번 시민을 이동시켜봐라.", "waitForClick": false, "triggerEvent": "B_secondMove" },
     { "text": "[다시 한 번 시민을 클릭하여 앞으로 이동해보세요.]", "waitForClick": false, "triggerEvent": "secondMove" },
     { "text": "이제 충분한 경험이 쌓였군. 그대는 시민에게 새로운 직업을 부여할 수도 있고, 좀 더 경험을 쌓게 둘 수도 있다.", "waitForClick": true, "triggerEvent": "" },
-    { "text": "시민이 얻을 수 있는 직업에 대하여 설명해주지.", "waitForClick": true, "triggerEvent": "" },
-    { "text": "한 번만 말할테니 명심하도록 해라.", "waitForClick": true, "triggerEvent": "" },
-    { "text": "첫 번째. 사제는 경험을 2 필요로 하며 자신의 위치 기준으로 대각선으로 최대 두 칸 이동할 수 있게 된다.", "waitForClick": true, "triggerEvent": "B_Bishop" },
-    { "text": "두 번째. 보병 또한 동일하게 경험을 2 필요로 하며 자신의 위치 기준으로 전방으로 최대 두 칸 이동할 수 있다.", "waitForClick": true, "triggerEvent": "B_Adult_Pawn" },
-    { "text": "세 번째. 무법자의 경우에는 경험을 3 필요로 한다. 주위에 사람이 없다면 한 칸 밖에 이동할 수 없지만, 무법자는 주위에 사람이 있을 때 진가를 발휘하지. 최대 두 칸 내에 대상이 있을 경우 그 대상을 뛰어넘을 수 있다.", "waitForClick": true, "triggerEvent": "B_Jump" },
-    { "text": "네 번째. 기사는 경험을 4 필요로 하며 자신이 있는 칸이 포함되는 열, 행, 대각선 이외의 칸 중 가장 가까운 칸으로 이동할 수 있다.", "waitForClick": true, "triggerEvent": "B_Knight" },
-    { "text": "마지막으로, 거인도 경험을 4 필요로 하며 자신의 위치 기준으로 열 또는 행을 따라 최대 두 칸 이동하거나, 위치를 유지할 수 있다." , "waitForClick": true, "triggerEvent": "B_God"},
-    { "text": "뿐만 아니라 이동 후 자신 기준 8방향에 있는 임의의 상대 1명을 원하는 위치로 이동할 수 있다. 단, 거인은 이미 인간이 아니기 때문에 폭포 밖으로 빠져나갈 수 없다.", "waitForClick": true, "triggerEvent": "B_God" },
-    { "text": "이 정도면 충분한 설명이 되었겠지. 행운을 빈다.", "waitForClick": true, "triggerEvent": "" }
+    { "text": "적재적소에 맞게 직업을 주어야 할거다.", "waitForClick": true, "triggerEvent": "" },
+    { "text": "이 정도면 충분한 설명이 되었겠지. 행운을 빈다.", "waitForClick": true, "triggerEvent": "B_GameEnd" }
   ]
 }

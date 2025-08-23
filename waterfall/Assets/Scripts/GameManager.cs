@@ -20,7 +20,7 @@ public static class Utils
     public static int J_THRESHOLD = 3; // Jump 형태 변화에 대한 역치
     public static float ISO_STEP = 0.5f; // 좌표 <-> 위치 벡터 변환을 위한 값
     public static int BASE_LAYER = 15; // Piece가 위치할 기준 레이어 (최대)
-    public static int MAX_HIT = 8; // 한번에 생길 수 있는 최대 Hit 수
+    public static int MAX_HIT = 9; // 한번에 생길 수 있는 최대 Hit 수
     public static float ALPHA_HIGH = 1; // 불투명하게 만들 때 alpha 값
     public static float ALPHA_LOW = 0.2f; // 반투명하게 만들 때 alpha 값
     public static string WHITE = "#FFFFFF";
