@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72ff4914c62d2740aa66c09d8e91456, type: 3}
+  m_Name: adultPawnData
+  m_EditorClassIdentifier: 
+  Name: "\uBCF4\uBCD1"
+  Icon: {fileID: 7839472567634266479, guid: a224207a44b9d724c8f009baf29d9e84, type: 3}
+  explainingText: "\uCDA9\uBD84\uD55C \uC804\uD22C \uACBD\uD5D8\uC740 \uC2DC\uBBFC\uC73C\uB85C
+    \uD558\uC5EC\uAE08 \uB354\uC6B1 \uB354 \uD6A8\uC728\uC801\uC778 \uC774\uB3D9\uBC29\uBC95\uC744
+    \uBC30\uC6B8 \uC218 \uC788\uAC8C \uD574\uC8FC\uC5C8\uB2E4."
+  description: "\uC804\uBC29\uC73C\uB85C 1~2\uCE78 \uC774\uB3D9\uD55C\uB2E4."

@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Net;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Rendering;
@@ -8,6 +10,11 @@ public class UIManager : MonoBehaviour
 	public CameraControl control; // 시점 변경을 위한 카메라
 	public GameObject pawnPanel;
 	public GameObject godPanel;
+	public GameObject tooltipPanel;
+	public List<TooltipData> tooltips;
+	public Dictionary<string, TooltipData> tooltipDict= new Dictionary<string, TooltipData>();
+	public TMP_Text name_Text;
+	public TMP_Text explainingText;
 	/// <summary>
 	/// 카메라를 전체 카메라로 변경
 	/// </summary>
@@ -23,6 +30,7 @@ public class UIManager : MonoBehaviour
 		}
 		pawnPanel.SetActive(false);
 		godPanel.SetActive(false);
+		tooltipPanel.SetActive(false);
 	}
 /// <summary>
 /// 카메라를 대상 카메라로 변경
@@ -31,6 +39,34 @@ public class UIManager : MonoBehaviour
 	public void PieceMode(Piece selected)
 	{
 		control.SetCamera(2f, Utils.PosToIso(selected.Pos));
+		pawnPanel.SetActive(false);
+		godPanel.SetActive(false);
+		tooltipPanel.SetActive(true);
+		if (selected is Pawn)
+		{
+			showUI("시민");
+		}
+		else if (selected is AdultPawn)
+		{
+			showUI("보병");
+		}
+		else if (selected is Bishop)
+		{
+			showUI("사제");
+		}
+		else if (selected is Jump)
+		{
+			showUI("무법자");
+		}
+		else if (selected is Knight)
+		{
+			showUI("기사");
+		}
+		else if (selected is God)
+		{
+			showUI("거인");
+		}
+
 	}
 	/// <summary>
 	/// 스킬 UI 띄우는 함수
@@ -59,7 +95,13 @@ public class UIManager : MonoBehaviour
 			GameManager.Instance.endTurn();
 		}
 	}
+	public void showUI(string name)
+	{
+		TooltipData data = tooltipDict[name];
+		name_Text.text = "현재 직업: "+data.Name;
+		explainingText.text = data.explainingText +"\n"+data.description;
 
+	}
 	// pawn panel의 자식 순서: A, B, J, K, G
 	IEnumerator openPawnPanel(Pawn selected)
 	{
@@ -81,11 +123,13 @@ public class UIManager : MonoBehaviour
 			float alpha = (selected.Step >= thresholds[i]) ? Utils.ALPHA_HIGH : Utils.ALPHA_LOW;
 			pawnPanel.transform.GetChild(i).GetComponent<CanvasGroup>().alpha = alpha;
 		}
+		tooltipPanel.SetActive(false);
 	}
 	IEnumerator openGodPanel()
 	{
 		yield return new WaitForSeconds(0.5f);
 		pawnPanel.SetActive(false);
 		godPanel.SetActive(true);
+		tooltipPanel.SetActive(false);
 	}
 }

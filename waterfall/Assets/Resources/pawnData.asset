@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72ff4914c62d2740aa66c09d8e91456, type: 3}
+  m_Name: pawnData
+  m_EditorClassIdentifier: 
+  Name: "\uC2DC\uBBFC"
+  Icon: {fileID: 1322821052197086858, guid: 89904e26de6cb9f4ebad8f31047a948a, type: 3}
+  explainingText: "\uC790\uC2E0\uC758 \uC2E0\uC744 \uC704\uD558\uC5EC \uBAA9\uC228\uAE4C\uC9C0
+    \uBC14\uCE5C \uC790\uC774\uB2E4. \uADF8\uB4E4\uC5D0\uAC8C \uD6C4\uD1F4\uB780
+    \uC5C6\uB2E4.  "
+  description: "\uC804\uBC29\uC73C\uB85C 1\uCE78 \uC774\uB3D9\uD55C\uB2E4."

@@ -136,6 +136,11 @@ public class GameManager : MonoBehaviour
             hits[i] = Instantiate(hitPrefab);
             hits[i].SetActive(false);
         }
+
+        foreach (TooltipData data in uiManager.tooltips)
+        {
+            uiManager.tooltipDict.Add(data.Name, data);
+        }
     }
 
     /// <summary>
