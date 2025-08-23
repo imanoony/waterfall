@@ -87,48 +87,24 @@ public class battleManager : MonoBehaviour
 					}
 			}
 		}
-		else if (selectedPiece is God)
-		{
 			foreach (Vector2Int Delta in selectedPiece.Offsets)
 			{
 				if (selectedPiece.CheckPos(selectedPiece.Pos.x + Delta.x, selectedPiece.Pos.y + Delta.y))
 					if (Map[selectedPiece.Pos.x + Delta.x,
-						    selectedPiece.Pos.y + Delta.y].piece == null)
+							selectedPiece.Pos.y + Delta.y].piece == null)
 					{
 						possiblePos.Add(new Vector2Int(
 							selectedPiece.Pos.x + Delta.x,
 							selectedPiece.Pos.y + Delta.y));
 
 					}
-					else
-					{
-						continue;
-					}
-				else continue;
-				if(selectedPiece.CheckPos(selectedPiece.Pos.x + 2*Delta.x, selectedPiece.Pos.y + 2*Delta.y))
-					if (Map[selectedPiece.Pos.x + 2*Delta.x,
-						    selectedPiece.Pos.y + 2*Delta.y].piece == null)
+					else if (selectedPiece is God &&
+					Map[selectedPiece.Pos.x + Delta.x, selectedPiece.Pos.y + Delta.y].piece == selectedPiece)
 					{
 						possiblePos.Add(new Vector2Int(
-							selectedPiece.Pos.x + 2*Delta.x,
-							selectedPiece.Pos.y + 2*Delta.y));
-
+							selectedPiece.Pos.x + Delta.x,
+							selectedPiece.Pos.y + Delta.y));
 					}
-			}
-			possiblePos.Add(new Vector2Int(selectedPiece.Pos.x,selectedPiece.Pos.y));
-		}
-		else{
-			foreach (Vector2Int Delta in selectedPiece.Offsets)
-			{
-				if(selectedPiece.CheckPos(selectedPiece.Pos.x + Delta.x, selectedPiece.Pos.y + Delta.y))
-						if (Map[selectedPiece.Pos.x + Delta.x,
-							    selectedPiece.Pos.y + Delta.y].piece == null)
-						{
-							possiblePos.Add(new Vector2Int(
-								selectedPiece.Pos.x + Delta.x,
-								selectedPiece.Pos.y + Delta.y));
-
-						}
 			}
 		}
 
