@@ -159,7 +159,7 @@ public class battleManager : MonoBehaviour
 		{
 			if (offset.Equals(new(0, 0))) continue;
 			Vector2Int curr = new(god.Pos.x + offset.x, god.Pos.y + offset.y);
-			Debug.Log($"Curr: {curr}");
+			if (Utils.FORBIDDEN.Contains(curr)) continue;
 			if (Map[curr.x, curr.y].piece != null) continue;
 			result.Add(curr);
 		}

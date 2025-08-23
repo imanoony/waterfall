@@ -25,6 +25,10 @@ public static class Utils
     public static float ALPHA_LOW = 0.2f; // 반투명하게 만들 때 alpha 값
     public static string WHITE = "#FFFFFF";
     public static string GREY = "#A7A7A7";
+    public static List<Vector2Int> FORBIDDEN = new()
+    {
+        new(0,0), new(8,8), new(0,8), new(8,0)
+    };
 
     // pos 정보를 확인하고 Piece가 위치해야 할 위치 벡터를 반환한다.
     public static Vector2 PosToIso(Vector2Int pos)

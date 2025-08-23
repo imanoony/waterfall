@@ -23,6 +23,7 @@ public abstract class Piece
         if (x == Utils.SizeX && Owner != Player.White) return false; // White만이 우측 경계를 넘을 수 있다.
         if (y == Utils.SizeY && Owner != Player.Black) return false; // Black만이 좌측 경계를 넘을 수 있다.
         if (x > Utils.SizeX || y > Utils.SizeY) return false;
+        if (Utils.FORBIDDEN.Contains(new(x, y))) return false;
         return true;
     }
     public bool SetPos(Vector2Int newpos)
@@ -31,6 +32,7 @@ public abstract class Piece
         if (newpos.x == Utils.SizeX && Owner != Player.White) return false; // White만이 우측 경계를 넘을 수 있다.
         if (newpos.y == Utils.SizeY && Owner != Player.Black) return false; // Black만이 좌측 경계를 넘을 수 있다.
         if (newpos.x > Utils.SizeX || newpos.y > Utils.SizeY) return false;
+        if (Utils.FORBIDDEN.Contains(newpos)) return false;
         if (newpos.x == Utils.SizeX)
         {
             GameManager.Instance.GetPoint(Owner);
