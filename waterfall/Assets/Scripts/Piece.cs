@@ -10,6 +10,7 @@ public abstract class Piece
     public event Action<Vector2Int> OnPosChanged; // 구독자에게 알림
     public Player Owner { get; private set; }
     public List<Vector2Int> Offsets { get; protected set; }
+    public virtual float PosOffset { get; protected set; } = 0f;
 
     public Piece(Vector2Int initpos, Player owner) { SetPos(initpos); SetOwner(owner); }
 
@@ -49,6 +50,7 @@ public abstract class Piece
 public class Pawn : Piece
 {
     public int Step { get; private set; }
+    public override float PosOffset { get; protected set; } = 0.15f;
     public void AddStep()
     {
         Step++;
@@ -76,6 +78,7 @@ public class Pawn : Piece
 
 public class AdultPawn : Piece
 {
+    public override float PosOffset { get; protected set; } = 0.2f;
     public AdultPawn(Vector2Int initpos, Player owner) : base(initpos, owner)
     {
         if (owner == Player.White) Offsets = new() { new(1, 0) };
@@ -85,7 +88,8 @@ public class AdultPawn : Piece
 
 public class God : Piece
 {
-    public int skillPhase=0;
+    public override float PosOffset { get; protected set; } = 0.23f;
+    public int skillPhase = 0;
     public Piece Target;
     public List<Vector2Int> Impacts = new()
     {
@@ -113,13 +117,14 @@ public class God : Piece
 
 public class Bishop : Piece
 {
+    public override float PosOffset { get; protected set; } = 0.21f;
     public Bishop(Vector2Int initpos, Player owner) : base(initpos, owner)
     {
         Offsets = new()
         {
             new(1,1),
             new(1,-1),
-            new(-1,1), 
+            new(-1,1),
             new(-1,-1)
         };
     }
@@ -127,6 +132,7 @@ public class Bishop : Piece
 
 public class Knight : Piece
 {
+    public override float PosOffset { get; protected set; } = 0.22f;
     public Knight(Vector2Int initpos, Player owner) : base(initpos, owner)
     {
         Offsets = new()
@@ -139,6 +145,7 @@ public class Knight : Piece
 
 public class Jump : Piece
 {
+    public override float PosOffset { get; protected set; } = 0.23f;
     public Jump(Vector2Int initpos, Player owner) : base(initpos, owner)
     {
         Offsets = new() { new(0, 1), new(0, -1), new(1, 0), new(-1, 0) };

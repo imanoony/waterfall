@@ -23,6 +23,9 @@ public static class Utils
     public static int MAX_HIT = 8; // 한번에 생길 수 있는 최대 Hit 수
     public static float ALPHA_HIGH = 1; // 불투명하게 만들 때 alpha 값
     public static float ALPHA_LOW = 0.2f; // 반투명하게 만들 때 alpha 값
+    public static string WHITE = "#FFFFFF";
+    public static string GREY = "#A7A7A7";
+
     // pos 정보를 확인하고 Piece가 위치해야 할 위치 벡터를 반환한다.
     public static Vector2 PosToIso(Vector2Int pos)
     {
@@ -68,8 +71,22 @@ public class GameManager : MonoBehaviour
             return instance;
         }
     }
-    public Player currentPlayer = Player.White; // 현재 플레이어의 턴 판단
-    public UIManager uiManager; // 
+
+    // Player가 바뀐 걸 각 piece가 자동으로 감지할 수 있도록 이벤트 등록
+    public static event Action<Player> OnPlayerChanged; 
+    private Player _currentPlayer;
+    public Player currentPlayer
+    {
+        get => _currentPlayer;
+        set
+        {
+            if (_currentPlayer == value) return; // 값이 같으면 무시
+            _currentPlayer = value;
+            OnPlayerChanged?.Invoke(_currentPlayer); // 이벤트 호출
+        }
+    }
+
+    public UIManager uiManager;
     public Piece currentPiece;
     private PieceBehaviour pieceBehaviour;
     public battleManager battleManager;
@@ -130,17 +147,18 @@ public class GameManager : MonoBehaviour
     // 스테이지 시작 시 호출된다. 
     public void InitGame()
     {
-        
+
         uiManager.MainCameraMode();
         currentPiece = null;
         isGameOver = false;
         White = 0;
         Black = 0;
         winText.text = White + " : " + Black;
+
         // battleManager Tilemap 세팅
-        for (int i = 0; i < Utils.SizeX+1; i++)
+        for (int i = 0; i < Utils.SizeX + 1; i++)
         {
-            for (int j = 0; j < Utils.SizeY+1; j++)
+            for (int j = 0; j < Utils.SizeY + 1; j++)
             {
                 battleManager.Map[i, j] = new tile();
             }
@@ -174,6 +192,8 @@ public class GameManager : MonoBehaviour
         {
             uiManager.tooltipDict.Add(data.Name, data);
         }
+        
+        currentPlayer = Player.White;
     }
 
     public void RestartGame()
