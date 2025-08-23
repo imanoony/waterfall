@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class tile
@@ -22,7 +23,7 @@ public class battleManager : MonoBehaviour
 	
 	public List<Vector2Int> getPossiblePosition(Piece selectedPiece)
 	{
-		List<Vector2Int> possiblePos = new List<Vector2Int>();
+		HashSet<Vector2Int> possiblePos = new();
 		if (selectedPiece is Jump)
 		{
 			foreach (Vector2Int Delta in selectedPiece.Offsets)
@@ -106,8 +107,7 @@ public class battleManager : MonoBehaviour
 							selectedPiece.Pos.y + Delta.y));
 					}
 			}
-		}
 
-		return possiblePos;
+		return possiblePos.ToList();
 	}
 }
