@@ -82,7 +82,7 @@ public class God : Piece
     public List<Vector2Int> Impacts = new()
     {
         new(1,0), new(1,1), new(1,-1),
-        new(0,1), new(0,0), new(0,-1),
+        new(0,1), new(0,-1),
         new(-1,0), new(-1,1), new(-1,-1)
     };
     public God(Vector2Int initpos, Player owner) : base(initpos, owner)

@@ -283,6 +283,7 @@ public class GameManager : MonoBehaviour
                         god.Target = battleManager.Map[currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y]
                             .piece;
                         god.skillPhase = 1;
+                        uiManager.GodPanelSelectPos((God)currentPiece);
                     }
                 }
                 else if (god.skillPhase == 1)

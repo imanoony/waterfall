@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class UIManager : MonoBehaviour
 	public GameObject godPanel;
 	public GameObject tooltipPanel;
 	public List<TooltipData> tooltips;
-	public Dictionary<string, TooltipData> tooltipDict= new Dictionary<string, TooltipData>();
+	public Dictionary<string, TooltipData> tooltipDict = new Dictionary<string, TooltipData>();
 	public TMP_Text name_Text;
 	public TMP_Text explainingText;
 	/// <summary>
@@ -20,7 +21,7 @@ public class UIManager : MonoBehaviour
 	/// </summary>
 	public void MainCameraMode()
 	{
-		control.SetCamera(3f,Vector2.zero);
+		control.SetCamera(3f, Vector2.zero);
 		foreach (tile tile in GameManager.Instance.battleManager.Map)
 		{
 			if (tile != null && tile.piece != null && GameManager.Instance.currentPlayer == tile.piece.Owner)
@@ -32,10 +33,10 @@ public class UIManager : MonoBehaviour
 		godPanel.SetActive(false);
 		tooltipPanel.SetActive(false);
 	}
-/// <summary>
-/// 카메라를 대상 카메라로 변경
-/// </summary>
-/// <param name="selected"></param>
+	/// <summary>
+	/// 카메라를 대상 카메라로 변경
+	/// </summary>
+	/// <param name="selected"></param>
 	public void PieceMode(Piece selected)
 	{
 		control.SetCamera(2f, Utils.PosToIso(selected.Pos));
@@ -77,9 +78,9 @@ public class UIManager : MonoBehaviour
 		control.SetCamera(2f, Utils.PosToIso(selected.Pos));
 		if (selected is God)
 		{
-			StartCoroutine(openGodPanel());
+			StartCoroutine(openGodPanel((God)selected));
 		}
-		else if(selected is Pawn pawn)
+		else if (selected is Pawn pawn)
 		{
 			if (pawn.Step >= 2)
 			{
@@ -98,8 +99,8 @@ public class UIManager : MonoBehaviour
 	public void showUI(string name)
 	{
 		TooltipData data = tooltipDict[name];
-		name_Text.text = "현재 직업: "+data.Name;
-		explainingText.text = data.explainingText +"\n"+data.description;
+		name_Text.text = "현재 직업: " + data.Name;
+		explainingText.text = data.explainingText + "\n" + data.description;
 
 	}
 	// pawn panel의 자식 순서: A, B, J, K, G
@@ -125,11 +126,65 @@ public class UIManager : MonoBehaviour
 		}
 		tooltipPanel.SetActive(false);
 	}
-	IEnumerator openGodPanel()
+	IEnumerator openGodPanel(God selected)
 	{
 		yield return new WaitForSeconds(0.5f);
 		pawnPanel.SetActive(false);
 		godPanel.SetActive(true);
 		tooltipPanel.SetActive(false);
+
+		GodPanelSelectPiece(selected);
+	}
+
+	private List<Vector2Int> godHits = new()
+	{
+		new(0,0), new(0,-1), new(-1,-1), new(-1,0),
+		new(-1,1), new(1,0), new(1,1), new(0,1),  new(1,-1)
+	};
+
+	// God Panel이 active 상태일 때 움직일 piece 고르기 단계에서 호출된다.
+	// 움직일 수 있는 piece에 대한 hit만 표시한다.
+	public void GodPanelSelectPiece(God selected)
+	{
+		GodPanelInit();
+
+		List<Vector2Int> posList = GameManager.Instance.battleManager.GetGodTargetPiece(selected);
+		List<Vector2Int> newHits = godHits.Select(offset => selected.Pos + offset).ToList();
+		foreach (Vector2Int pos in posList)
+		{
+			int i = newHits.IndexOf(pos);
+			Debug.Log($"Get God Target Piece의 결과 {i}: {pos}");
+			if (i < 0) continue;
+			godPanel.transform.GetChild(i).gameObject.SetActive(true);
+		}
+
+		// 움직일 수 있는 piece가 존재하지 않는 경우 바로 턴을 넘긴다.
+		if (posList.Count == 0)
+		{
+			GameManager.Instance.endTurn();
+		}
+	}
+
+	// God Panel이 active 상태일 때 움직일 pos 고르기 단계에서 호출된다.
+	// 이동시킬 수 있는 위치에서 대한 hit만 표시한다.
+	public void GodPanelSelectPos(God selected)
+	{
+		GodPanelInit();
+		
+		List<Vector2Int> posList = GameManager.Instance.battleManager.GetGodTargetPos(selected);
+		List<Vector2Int> newHits = godHits.Select(offset => selected.Pos + offset).ToList();
+		foreach (Vector2Int pos in posList)
+		{
+			int i = newHits.IndexOf(pos);
+			Debug.Log($"Get God Target Pos의 결과 {i}: {pos}");
+			if (i < 0) continue;
+			godPanel.transform.GetChild(i).gameObject.SetActive(true);
+		}
+	}
+
+	// God Panel의 모든 자식 오브젝트 끄기 함수
+	private void GodPanelInit()
+	{
+		for (int i = 0; i < 9; i++) godPanel.transform.GetChild(i).gameObject.SetActive(false);
 	}
 }

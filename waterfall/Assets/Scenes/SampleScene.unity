@@ -724,12 +724,12 @@ MonoBehaviour:
   godPanel: {fileID: 477779138}
   tooltipPanel: {fileID: 430199797}
   tooltips:
+  - {fileID: 11400000, guid: 38ed9ef27bda481419b7ff814d5b9475, type: 2}
   - {fileID: 11400000, guid: ffcc4f6100c534542a19b3c27e297d89, type: 2}
   - {fileID: 11400000, guid: 423e77b81e810484da50bceca3738a18, type: 2}
   - {fileID: 11400000, guid: 3990fe73dfcc1b24586543c40d1f9723, type: 2}
-  - {fileID: 11400000, guid: a0900ad17f0b900478edd4ec170b98f5, type: 2}
   - {fileID: 11400000, guid: 53c2b63b860d96b4a83bd365fb875f5e, type: 2}
-  - {fileID: 11400000, guid: 38ed9ef27bda481419b7ff814d5b9475, type: 2}
+  - {fileID: 11400000, guid: a0900ad17f0b900478edd4ec170b98f5, type: 2}
   name_Text: {fileID: 1461031274}
   explainingText: {fileID: 1435353908}
 --- !u!114 &373296826
@@ -1681,7 +1681,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &477779139
 RectTransform:
   m_ObjectHideFlags: 0
