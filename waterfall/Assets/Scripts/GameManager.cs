@@ -451,10 +451,9 @@ public class GameManager : MonoBehaviour
                         god.Target.SetPos(new Vector2Int(currentPiece.Pos.x + deltaPos.x, currentPiece.Pos.y + deltaPos.y));
                         god.Target = null;
                         god.skillPhase = 0;
-                        StartCoroutine(DelayEnd());
 
                         audioManager.PlaySFX(SFX_GodSkill1);
-                        endTurn();
+                        StartCoroutine(DelayEnd());
                     }
                 }
             }

@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
 	public void MainCameraMode()
 	{
 		GameManager.Instance.winText.gameObject.SetActive(true);
-		GameManager.Instance.turnText.gameObject.SetActive(true);
+		if (!GameManager.Instance.isGameOver) GameManager.Instance.turnText.gameObject.SetActive(true);
 		control.SetCamera(3f,new(0, 0.7f));
 		foreach (tile tile in GameManager.Instance.battleManager.Map)
 		{
