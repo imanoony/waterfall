@@ -1,5 +1,5 @@
 # 폭포 게임
-[여기서 플레이](https://anoony22.itch.io/waterfall)
+[여기서 플레이](https://anoony22.itch.io/waterfall)\\
 만든 사람들 : [imanoony](https://github.com/imanoony), [SonTown](https://github.com/SonTown)
 
 <p align="center">
