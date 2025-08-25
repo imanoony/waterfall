@@ -3,16 +3,18 @@
 만든 사람들 : [imanoony](https://github.com/imanoony), [SonTown](https://github.com/SonTown)
 
 
-<img src="./images/screenshot1.png" height=400>
+<img src="./images/screenshot1.png" height=400 align="center">
 
 ---
 
 ### 개요
 
-<img src="./images/screenshot3.png" height=200>
-<img src="./images/screenshot2.png" height=200>
-<img src="./images/screenshot4.png" height=200>
-<img src="./images/screenshot5.png" height=200>
+<p align="center">
+    <img src="./images/screenshot3.png" height=200/>
+    <img src="./images/screenshot2.png" height=200/>
+    <img src="./images/screenshot4.png" height=200/>
+    <img src="./images/screenshot5.png" height=200/>
+</p>
 
 2025 UPnL 여름 게임잼 대상 수상작 (주제: 폭포, 형태 변환)
 상대보다 먼저 3명의 신도를 맞은편 안식처에 보내라
